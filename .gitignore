@@ -1,0 +1,19 @@
+# Local developer configuration (contains machine-specific game path)
+Directory.Build.props
+
+# Rider
+**/.idea
+
+*.suo
+*.user
+.vs/
+[Bb]in/
+[Oo]bj/
+_UpgradeReport_Files/
+[Pp]ackages/
+
+Thumbs.db
+Desktop.ini
+.DS_Store
+GPUCache
+*.nupkg
