@@ -8,7 +8,7 @@ Composter
 
 2 biomass → CH4 + ?
 
-Combuster with the Stationeers Combustion Fix
+Combustor with the [Stationeers Combustion Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3724908136)
 
 CH4 + 2 O2 → CO2 + 2 H2O
 
