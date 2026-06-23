@@ -3,15 +3,23 @@
   <Name>Stationeers Advanced Composter Fix</Name>
   <Author>yaskovdev</Author>
   <Version>1.0.0</Version>
-  <Description>Fixes Advanced Composter.
+  <Description>This mod is a BepInEx plugin.
+[b]It requires BepInEx with the StationeersLaunchPad plugin to be installed.[/b]
+See the detailed guide at: https://github.com/StationeersLaunchPad/StationeersLaunchPad
+
+[h1]Stationeers Advanced Composter Fix[/h1]
+
+Fixes Advanced Composter.
 
 Contributions, improvements, suggestions, and comments are welcome.
 
+[h2]Feedback[/h2]
+
 GitHub repository: https://github.com/yaskovdev/StationeersComposterFix</Description>
   <ChangeLog xsi:nil="true" />
-<!-- TODO: WorkshopHandle -->
+<!-- TODO: after the first publish, update this with the Workshop ID assigned by Steam -->
 <!-- TODO: images -->
-  <WorkshopHandle>3724908136</WorkshopHandle>
+  <WorkshopHandle>0</WorkshopHandle>
   <Tags />
   <InGameDescription xsi:nil="true" />
 </ModMetadata>

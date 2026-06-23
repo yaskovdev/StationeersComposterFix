@@ -32,3 +32,18 @@ The project requires a reference to `Assembly-CSharp.dll` from your local Statio
 
    `Directory.Build.props` is ignored in Git, so this change stays local to your machine.
 3. Run `dotnet clean` and `dotnet build` to build the project.
+
+## Installing the Mod (for Developers)
+
+Before building, make sure there are no conflicting copies of the mod:
+
+1. Unsubscribe from the mod in Steam Workshop (if subscribed).
+2. Verify there is no `StationeersComposterFix.dll` in `<GameDir>\BepInEx\plugins\` (where `<GameDir>` is your Stationeers installation path, e.g. `C:\Program Files (x86)\Steam\steamapps\common\Stationeers`).
+
+Then run the build script:
+
+```powershell
+.\Build-Plugin.ps1
+```
+
+This builds the plugin in Release configuration and deploys it (along with the `About` folder) to `Documents\My Games\Stationeers\mods\StationeersComposterFix\`.
