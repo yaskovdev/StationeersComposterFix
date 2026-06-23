@@ -1,12 +1,13 @@
 ﻿namespace StationeersComposterFix;
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Assets.Scripts.Objects;
 using HarmonyLib;
 using Objects.Electrical;
-using static Assets.Scripts.Atmospherics.Chemistry;
 
+[ExcludeFromCodeCoverage]
 [HarmonyPatch(typeof(Prefab), "Register")]
 internal class PrefabPatch
 {
@@ -19,20 +20,10 @@ internal class PrefabPatch
         if (sourcePrefab is AdvancedComposter composter)
         {
             Plugin.Logger?.LogInfo($"Prefab.Register called with: {composter}, expelled gases before patching are: {Format(composter.ExpelledGas)}, MolesDrainedPerProcessedItem: {AdvancedComposter.MolesDrainedPerProcessedItem}");
-            if (IsExpectedUnpatched(composter))
-            {
-                composter.ExpelledGas.Add(new SpawnGas(GasType.CarbonDioxide, 50, composter.ExpelledGas[0].Kelvin));
-                composter.ExpelledGas.Add(new SpawnGas(GasType.Steam, 20, composter.ExpelledGas[0].Kelvin));
-            }
+            composter.ExpelledGas.Patch((float)AdvancedComposter.MolesDrainedPerProcessedItem.ToDouble());
             Plugin.Logger?.LogInfo($"Expelled gases after patching are: {Format(composter.ExpelledGas)}");
         }
     }
-
-    private static bool IsExpectedUnpatched(AdvancedComposter composter) =>
-        AdvancedComposter.MolesDrainedPerProcessedItem.ToDouble().Equals(20.0)
-        && composter.ExpelledGas.Count == 2
-        && composter.ExpelledGas[0].Type == GasType.Methane && composter.ExpelledGas[0].Quantity.Equals(50)
-        && composter.ExpelledGas[1].Type == GasType.Nitrogen && composter.ExpelledGas[1].Quantity.Equals(50);
 
     private static string Format(IReadOnlyCollection<SpawnGas> gases) => string.Join(", ", gases.Select(Format));
 
