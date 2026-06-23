@@ -1,22 +1,32 @@
 # Stationeers Composter Fix
 
-Plants
+Fixes the Advanced Composter to produce chemically correct outputs.
 
-2 CO2 + 2 H20 → 2 biomass + 2 O2
+## Chemistry
 
-Composter
+### Reactions
 
-2 biomass → CH4 + ?
+| Component | Reaction                             |
+|-----------|--------------------------------------|
+| Plants    | CO₂ + H₂O → CH₂O + O₂                |
+| Character | CH₂O + O₂ → CO₂ + H₂O                |
+| Composter | 2 CH₂O + H₂O(l) → CH₄ + CO₂ + H₂O(g) |
+| Combustor | CH₄ + 2 O₂ → CO₂ + 2 H₂O             |
 
-Combustor with the [Stationeers Combustion Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3724908136)
+Biomass is treated as CH₂O (formaldehyde equivalent), derived from the Plants equation. The composter consumes liquid water as a medium; composting heat evaporates it as steam.
 
-CH4 + 2 O2 → CO2 + 2 H2O
+The Combustor reaction requires the [Stationeers Combustion Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3724908136).
 
-----
+### Closed Loop (self-sustainable ratios)
 
-Solving the Plants equation, 1 biomass should be CH2O.
+| Component | Multiplier | Reaction                             |
+|-----------|:----------:|--------------------------------------|
+| Plants    |     4×     | CO₂ + H₂O → CH₂O + O₂                |
+| Character |     2×     | CH₂O + O₂ → CO₂ + H₂O                |
+| Composter |     1×     | 2 CH₂O + H₂O(l) → CH₄ + CO₂ + H₂O(g) |
+| Combustor |     1×     | CH₄ + 2 O₂ → CO₂ + 2 H₂O             |
 
-Then the Composter equation becomes `2 CH2O → CH4 + ?`, therefore `?` should be CO2.
+All species (CO₂, H₂O, O₂, CH₂O, CH₄) net to zero. Steam condenses back into the water supply.
 
 ## Setting Up the Project
 

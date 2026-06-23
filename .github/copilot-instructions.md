@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A BepInEx plugin (mod) for the game [Stationeers](https://store.steampowered.com/app/544550/Stationeers/) that fixes the Advanced Composter to also expel CO₂. The chemistry reasoning: plants consume `2 CO₂ + 2 H₂O → 2 biomass + 2 O₂`, so biomass is effectively CH₂O, and composting `2 CH₂O → CH₄ + CO₂` should produce CO₂ alongside methane.
+A BepInEx plugin (mod) for the game [Stationeers](https://store.steampowered.com/app/544550/Stationeers/) that fixes the Advanced Composter to also expel CO₂ and Steam. The chemistry reasoning: biomass is effectively CH₂O, so the correct composter reaction is `2 CH₂O + H₂O(l) → CH₄ + CO₂ + H₂O(g)`. Water is consumed as a medium for microbial activity and expelled as steam (phase change, not chemically consumed).
 
 ## Build & Test
 
@@ -22,11 +22,11 @@ The plugin targets `netstandard2.0`; the test project targets `net8.0` (MSTest +
 The mod patches the Advanced Composter prefab via a Harmony **prefix** on `Prefab.Register`. The flow is:
 
 1. **`Plugin.cs`** — BepInEx entry point. Calls `harmony.PatchAll()` to apply all Harmony patches in the assembly.
-2. **`PrefabPatch.cs`** — The Harmony `[HarmonyPatch]`. The `Prefix` method intercepts `Prefab.Register` calls, checks if the prefab is an `AdvancedComposter`, and adds `GasType.CarbonDioxide` to its `ExpelledGas` list if not already present. The new entry copies quantity and temperature from the existing expelled gas entry.
+2. **`PrefabPatch.cs`** — The Harmony `[HarmonyPatch]`. The `Prefix` method intercepts `Prefab.Register` calls, checks if the prefab is an `AdvancedComposter`, and adds `GasType.CarbonDioxide` and `GasType.Steam` to its `ExpelledGas` list if the current values exactly match the expected unpatched state.
 
 ## Key Conventions
 
-- **Idempotent patching:** The prefix checks `composter.ExpelledGas.All(it => it.Type != GasType.CarbonDioxide)` before adding, so it's safe if called multiple times.
+- **Exact match detection:** The patch uses `IsExpectedUnpatched()` to verify expelled gas types, quantities, and `MolesDrainedPerProcessedItem` before applying changes. If the game developers change any of these values, the patch silently skips rather than applying corrections to an unrecognized configuration.
 - **`using` directives go inside the namespace** (per `.editorconfig`).
 - **Companion mod:** This mod is designed to work alongside [StationeersCombustionFix](https://steamcommunity.com/sharedfiles/filedetails/?id=3724908136), which fixes methane combustion stoichiometry.
 
