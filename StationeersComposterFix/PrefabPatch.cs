@@ -8,20 +8,25 @@ using HarmonyLib;
 using Objects.Electrical;
 
 [ExcludeFromCodeCoverage]
-[HarmonyPatch(typeof(Prefab), "Register")]
+[HarmonyPatch(typeof(Prefab), "Register")] // TODO: or RegisterExisting? It's public, by the way, so you can use nameof().
 internal class PrefabPatch
 {
     /// <summary>
-    /// Adds CO2 and Steam to Advanced Composter prefab expelled gases.
+    /// Adds CO2 and Steam to Advanced Composter and Dynamic Composter prefab expelled gases.
     /// </summary>
     internal static void Prefix(Thing sourcePrefab)
     {
-        // TODO: consider tuning the regular composter as well for consistency
-        if (sourcePrefab is AdvancedComposter composter)
+        if (sourcePrefab is DynamicComposter dynamicComposter)
         {
-            Plugin.Logger?.LogInfo($"Prefab.Register called with: {composter}, expelled gases before patching are: {Format(composter.ExpelledGas)}, MolesDrainedPerProcessedItem: {AdvancedComposter.MolesDrainedPerProcessedItem}");
-            composter.ExpelledGas.Patch((float)AdvancedComposter.MolesDrainedPerProcessedItem.ToDouble());
-            Plugin.Logger?.LogInfo($"Expelled gases after patching are: {Format(composter.ExpelledGas)}");
+            Plugin.Logger?.LogInfo($"Prefab.Register called with: {dynamicComposter}, expelled gases before patching are: {Format(dynamicComposter.ExspelledGas)}, MolesDrainedPerProcessedItem: {DynamicComposter.MolesDrainedPerProcessedItem}");
+            dynamicComposter.ExspelledGas.Patch((float)DynamicComposter.MolesDrainedPerProcessedItem.ToDouble());
+            Plugin.Logger?.LogInfo($"Expelled gases after patching are: {Format(dynamicComposter.ExspelledGas)}");
+        }
+        else if (sourcePrefab is AdvancedComposter advancedComposter)
+        {
+            Plugin.Logger?.LogInfo($"Prefab.Register called with: {advancedComposter}, expelled gases before patching are: {Format(advancedComposter.ExpelledGas)}, MolesDrainedPerProcessedItem: {AdvancedComposter.MolesDrainedPerProcessedItem}");
+            advancedComposter.ExpelledGas.Patch((float)AdvancedComposter.MolesDrainedPerProcessedItem.ToDouble());
+            Plugin.Logger?.LogInfo($"Expelled gases after patching are: {Format(advancedComposter.ExpelledGas)}");
         }
     }
 

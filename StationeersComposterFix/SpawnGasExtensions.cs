@@ -6,7 +6,7 @@ using static Assets.Scripts.Atmospherics.Chemistry;
 
 public static class SpawnGasExtensions
 {
-    public static void Patch(this List<SpawnGas> expelledGas, float steamQuantity)
+    public static void Patch(this IList<SpawnGas> expelledGas, float steamQuantity)
     {
         if (expelledGas.IsExpectedUnpatched())
         {
@@ -15,7 +15,7 @@ public static class SpawnGasExtensions
         }
     }
 
-    private static bool IsExpectedUnpatched(this List<SpawnGas> expelledGas) =>
+    private static bool IsExpectedUnpatched(this IList<SpawnGas> expelledGas) =>
         expelledGas.Count == 2
         && expelledGas[0].Type == GasType.Methane && expelledGas[0].Quantity.Equals(50)
         && expelledGas[1].Type == GasType.Nitrogen && expelledGas[1].Quantity.Equals(50);
